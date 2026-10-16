@@ -1,141 +1,141 @@
 # Infrastructure as Skills
 
-> Geführte, ausführbare Runbooks für Infrastruktur, die sich **nicht** per IaC ausrollen lässt.
+> Guided, executable runbooks for infrastructure that **cannot** be rolled out with IaC.
 
 ---
 
 # ⚠️ ⚠️ ⚠️  PROTOTYPE WARNING  ⚠️ ⚠️ ⚠️
 
-> ## 🚧 DAS HIER IST EIN PROTOTYP. NICHTS DAVON IST PRODUKTIONSREIF. 🚧
+> ## 🚧 THIS IS A PROTOTYPE. NONE OF IT IS PRODUCTION-READY. 🚧
 >
-> **Was das konkret heißt:**
+> **What that means in practice:**
 >
-> - 🧪 **Experiment, kein Produkt.** Das Repo erkundet, ob sich ClickOps überhaupt sinnvoll als Skill fassen lässt. Die Antwort ist offen.
-> - 🤖 **Ein LLM klickt in echten Oberflächen.** Es kann das falsche Feld treffen, den falschen Knopf drücken, den falschen Datensatz erwischen. Es gibt keinen `plan`, keinen State, kein `apply` das abbricht.
-> - 💥 **Kein Undo.** Eine GUI hat kein `terraform destroy`. Was hier schiefgeht, geht per Hand zurück — wenn überhaupt.
-> - 🔒 **Niemals gegen Produktion.** Dev und Staging. Prod nur mit zweiter menschlicher Freigabe, und auch dann auf eigenes Risiko.
-> - 👀 **Kein Vollautomat.** Jeder Lauf braucht einen Menschen, der mitliest und freigibt. Wer das Fenster unbeaufsichtigt laufen lässt, hat das Konzept nicht verstanden.
-> - 📉 **Alles kann sich ändern.** Struktur, Konventionen, Skill-Format, Protokollformat. Keine Stabilitätsgarantie, keine Migrationspfade, keine Versionierung.
-> - 🙅 **Keine Haftung, kein Support.** Nutzung auf eigene Verantwortung.
+> - 🧪 **An experiment, not a product.** This repo explores whether ClickOps can be captured as a skill at all. The answer is still open.
+> - 🤖 **An LLM clicks in real user interfaces.** It can hit the wrong field, press the wrong button, catch the wrong record. There is no `plan`, no state, no `apply` that aborts.
+> - 💥 **No undo.** A GUI has no `terraform destroy`. Whatever goes wrong here is reverted by hand — if at all.
+> - 🔒 **Never against production.** Dev and staging. Prod only with a second human approval, and even then at your own risk.
+> - 👀 **Not an autopilot.** Every run needs a human reading along and approving. Anyone leaving the window unattended has missed the point.
+> - 📉 **Everything can change.** Structure, conventions, skill format, protocol format. No stability guarantees, no migration paths, no versioning.
+> - 🙅 **No warranty, no support.** Use at your own risk.
 >
-> **Wenn es eine API gibt: nimm Terraform. Nimm Pulumi. Nimm Ansible. Nimm alles andere zuerst.**
+> **If there is an API: use Terraform. Use Pulumi. Use Ansible. Use anything else first.**
 
 ---
 
-## Warum
+## Why
 
-Es gibt Infrastruktur, für die es kein Terraform-Modul gibt und auch keins geben wird:
-Vendor-Portale, Legacy-Appliances, Firewall- und Netzwerk-GUIs, SaaS-Admin-Konsolen,
-Behördenportale. Dort passiert ClickOps — nach Gedächtnis, nach Wiki-Screenshots von
-2021, nach dem Kollegen, der es letztes Mal gemacht hat.
+There is infrastructure that has no Terraform module and never will: vendor portals,
+legacy appliances, firewall and network GUIs, SaaS admin consoles, government portals.
+That is where ClickOps happens — from memory, from wiki screenshots taken in 2021, from
+the colleague who did it last time.
 
-Dieses Repo versucht nicht, diese Lücke wegzudefinieren. Es versucht, sie zu
-dokumentieren — in einer Form, die ein Agent ausführen kann und ein Mensch prüfen kann.
+This repo does not try to define that gap away. It tries to document it — in a form an
+agent can execute and a human can review.
 
-## Abgrenzung
+## Scope
 
 | | IaC (Terraform, Pulumi, Ansible) | Infrastructure as Skills |
 |---|---|---|
-| Voraussetzung | Es gibt eine API | Es gibt **keine** API |
-| Ausführung | deterministisch, idempotent | best effort, GUI-abhängig |
-| Sicherheitsnetz | State, Plan, Drift-Detection | menschliche Freigabepunkte |
-| Ergebnis | reproduzierbar | protokolliert |
+| Precondition | There is an API | There is **no** API |
+| Execution | deterministic, idempotent | best effort, GUI-dependent |
+| Safety net | state, plan, drift detection | human approval gates |
+| Result | reproducible | recorded |
 
-**IaC bleibt die erste Wahl.** Ein Skill ist die Antwort auf "es gibt hier nichts
-anderes", nicht auf "Terraform ist mir zu umständlich". Existiert ein Modul, greift der
-Skill nicht — das steht in jedem `SKILL.md` unter *Wann NICHT*.
+**IaC remains the first choice.** A skill is the answer to "there is nothing else here",
+not to "Terraform feels like too much work". If a module exists, the skill does not
+apply — every `SKILL.md` says so under *When NOT to use*.
 
-## Rollenverteilung
+## Division of labour
 
-- **Der Skill liefert das Wissen**: Reihenfolge, Klickpfad, Stolpersteine, Rollback.
-- **Die Ausführung** läuft über Browser-Steuerung oder Computer Use; deterministische
-  Teilschritte über mitgelieferte Skripte.
-- **Der Mensch gibt frei** — an festen Haltepunkten, nicht nach Gefühl.
+- **The skill carries the knowledge**: order of steps, click path, pitfalls, rollback.
+- **Execution** runs through browser control or computer use; deterministic sub-steps
+  through the scripts shipped with the skill.
+- **The human approves** — at fixed gates, not by feel.
 
-Erwartung: ein Copilot mit Freigabepunkten. Captchas und MFA unterbrechen jede
-Automatisierung; dort übernimmt der Mensch kurz und gibt zurück.
+Expect a copilot with approval gates. Captchas and MFA interrupt any automation; there
+the human takes over briefly and hands back.
 
-## Repo-Struktur
+## Repository layout
 
 ```
 Infrastructure-as-Skills/
-├── README.md                  # dieses Dokument
-├── CONVENTIONS.md             # Pflicht-Phasen, Checkpoint-Regeln, Protokollformat
+├── README.md                  # this document
+├── CONVENTIONS.md             # mandatory phases, checkpoint rules, protocol format
 ├── _templates/
-│   └── SKILL.md               # Vorlage für neue Skills
+│   └── SKILL.md               # template for new skills
 ├── _shared/
-│   ├── checkpoint.md          # Standardtext für Freigabe-Schritte
-│   ├── protocol-template.md   # Aufbau eines Ausführungsprotokolls
-│   └── scripts/               # gemeinsame Helfer (Validierung, Logging)
-├── <system>-<aktion>/         # z. B. firewall-add-rule, portal-create-user
-│   ├── SKILL.md               # Ablauf, Klickpfad, Stolpersteine
-│   ├── inputs.schema.json     # erwartete Eingaben + Validierung
-│   ├── scripts/               # deterministische Teilschritte (optional)
-│   ├── reference/             # Screenshots der GUI, bekannte Fehlermeldungen
-│   └── state/                 # Soll-Zustand als YAML (optional, für Drift-Check)
-└── runs/                      # Protokolle je Ausführung
+│   ├── checkpoint.md          # standard wording for approval steps
+│   ├── protocol-template.md   # structure of an execution protocol
+│   └── scripts/               # shared helpers (validation, logging)
+├── <system>-<action>/         # e.g. firewall-add-rule, portal-create-user
+│   ├── SKILL.md               # procedure, click path, pitfalls
+│   ├── inputs.schema.json     # expected inputs + validation
+│   ├── scripts/               # deterministic sub-steps (optional)
+│   ├── reference/             # GUI screenshots, known error messages
+│   └── state/                 # desired state as YAML (optional, for drift checks)
+└── runs/                      # one protocol per execution
 ```
 
-- **Namensschema `<system>-<aktion>`**, damit Skills nach System gruppiert bleiben.
-- **`runs/` wird versioniert** (oder in ein separates Audit-Repo geschrieben), damit es
-  ein Git-Log der manuellen Änderungen gibt: `runs/<datum>_<skill>_<ticket>.md`.
-- **`reference/` hält den erwarteten GUI-Stand fest.** Weicht die Oberfläche ab, stoppt
-  der Skill und fragt nach.
+- **Naming scheme `<system>-<action>`**, so skills stay grouped by system.
+- **`runs/` is versioned** (or written to a separate audit repo), so there is a git log
+  of the manual changes: `runs/<date>_<skill>_<ticket>.md`.
+- **`reference/` pins the expected state of the GUI.** If the interface deviates, the
+  skill stops and asks.
 
-## Die sechs Phasen
+## The six phases
 
-Jeder Skill durchläuft dieselben sechs Phasen. **Phase 2 und Phase 4 sind
-Pflicht-Haltepunkte**, an denen ein Mensch freigibt.
+Every skill runs the same six phases. **Phase 2 and phase 4 are mandatory stops** where
+a human approves.
 
-| # | Phase | Inhalt |
+| # | Phase | Content |
 |---|---|---|
-| 1 | **Vorbereitung** | Eingaben abfragen und gegen `inputs.schema.json` validieren, Umgebung und Zugang prüfen |
-| 2 | **Plan** 🛑 | Geplante Änderungen auflisten und **auf Freigabe warten** |
-| 3 | **Ausführung** | Klickpfad abarbeiten, Schritt für Schritt |
-| 4 | **Checkpoint** 🛑 | Vor dem schreibenden Schritt: Screenshot zeigen, **auf Freigabe warten**, dann speichern |
-| 5 | **Verifikation** | Seite neu laden, Werte prüfen, Funktionstest |
-| 6 | **Protokoll** | Lauf nach `runs/` schreiben: geplant, freigegeben, ausgeführt, verifiziert |
+| 1 | **Preparation** | Collect inputs and validate them against `inputs.schema.json`, check environment and access |
+| 2 | **Plan** 🛑 | List the intended changes and **wait for approval** |
+| 3 | **Execution** | Work through the click path, step by step |
+| 4 | **Checkpoint** 🛑 | Before the writing step: show a screenshot, **wait for approval**, then save |
+| 5 | **Verification** | Reload the page, check the values, run a functional test |
+| 6 | **Protocol** | Write the run to `runs/`: planned, approved, executed, verified |
 
-Wird ein Checkpoint abgelehnt, korrigiert der Skill den Schritt in der GUI und zeigt ihn
-erneut zur Freigabe vor. Er geht nicht weiter und er entscheidet nicht selbst.
+If a checkpoint is rejected, the skill corrects the step in the GUI and presents it for
+approval again. It does not move on and it does not decide on its own.
 
-## Leitplanken
+## Guardrails
 
-Die vollständigen Regeln gehören nach `CONVENTIONS.md` (folgt noch) und gelten dann für
-jeden Skill im Repo.
+The full rules belong in `CONVENTIONS.md` (not written yet) and will then apply to every
+skill in the repo.
 
-| Thema | Regel |
+| Topic | Rule |
 |---|---|
-| **Credentials** | Minimale Rechte, möglichst kurzlebige Tokens oder eigene Service-Accounts, keine Admin-Keys im Skill |
-| **Destruktive Aktionen** | Löschen, Überschreiben, Force immer als eigener Bestätigungsschritt, im Skill fest verankert |
-| **Umgebungen** | Pro Skill festlegen, welche erlaubt sind; Prod nur mit zweiter Freigabe |
-| **Audit** | Jeder Lauf schreibt ein Protokoll nach `runs/` |
-| **GUI-Abweichung** | Weicht die Oberfläche von `reference/` ab, stoppt der Skill und fragt nach |
-| **Grenzen** | Captchas und MFA unterbrechen den Lauf; der Mensch übernimmt kurz und gibt zurück |
+| **Credentials** | Least privilege, short-lived tokens or dedicated service accounts where possible, no admin keys in the skill |
+| **Destructive actions** | Delete, overwrite and force are always a separate confirmation step, hard-wired into the skill |
+| **Environments** | Each skill declares which environments are allowed; prod only with a second approval |
+| **Audit** | Every run writes a protocol to `runs/` |
+| **GUI deviation** | If the interface deviates from `reference/`, the skill stops and asks |
+| **Limits** | Captchas and MFA interrupt the run; the human takes over briefly and hands back |
 
-## Einen Skill hinzufügen
+## Adding a skill
 
-1. Szenario prüfen: Gibt es wirklich keine API? Wenn doch — IaC.
-2. Ordner `<system>-<aktion>/` anlegen.
-3. Klickpfad **einmal manuell** durchgehen, Screenshots nach `reference/` legen.
-4. `_templates/SKILL.md` kopieren und ausfüllen, Stolpersteine ergänzen.
-5. `inputs.schema.json` für die Eingaben anlegen.
-6. In Dev ausführen, Checkpoints testen — **auch die Ablehnung**.
-7. Protokoll prüfen: Ist für einen Dritten nachvollziehbar, was geändert wurde?
+1. Check the scenario: is there really no API? If there is — use IaC.
+2. Create the folder `<system>-<action>/`.
+3. Walk the click path **manually once**, put the screenshots in `reference/`.
+4. Copy `_templates/SKILL.md`, fill it in, add the pitfalls you hit.
+5. Write `inputs.schema.json` for the inputs.
+6. Run it in dev, test the checkpoints — **including a rejection**.
+7. Review the protocol: could a third party tell what was changed?
 
-## Stand des PoC
+## State of the PoC
 
-Ziel: ein einziger Skill, der ein echtes ClickOps-Szenario dreimal sauber durchläuft,
-jedes Mal mit Protokoll.
+Goal: a single skill that runs one real ClickOps scenario cleanly three times, with a
+protocol each time.
 
-- [ ] Szenario wählen: häufig, risikoarm, mit Dev- oder Staging-Umgebung
-- [ ] Repo-Gerüst: `README.md`, `CONVENTIONS.md`, `_templates/`, `_shared/`, `runs/`
-- [ ] Klickpfad manuell durchgehen, Screenshots nach `reference/`
-- [ ] `SKILL.md` aus der Vorlage schreiben
-- [ ] `inputs.schema.json` anlegen
-- [ ] Skill in Claude laden, in Dev ausführen, Checkpoints testen (auch Ablehnung)
-- [ ] Protokoll auf Nachvollziehbarkeit prüfen
-- [ ] Lessons learned festhalten, Vorlage nachschärfen
-- [ ] Optional: Soll-Zustand als YAML in `state/`, zweiter Skill für Drift-Check
+- [ ] Pick a scenario: frequent, low-risk, with a dev or staging environment
+- [ ] Repo scaffolding: `README.md`, `CONVENTIONS.md`, `_templates/`, `_shared/`, `runs/`
+- [ ] Walk the click path manually, screenshots to `reference/`
+- [ ] Write `SKILL.md` from the template
+- [ ] Write `inputs.schema.json`
+- [ ] Load the skill in Claude, run it in dev, test the checkpoints (including rejection)
+- [ ] Check the protocol for traceability
+- [ ] Capture lessons learned, sharpen the template
+- [ ] Optional: desired state as YAML in `state/`, a second skill for the drift check
 
-Bis diese Liste nicht abgehakt ist, gilt die Warnung oben in voller Länge.
+Until that list is checked off, the warning at the top applies in full.
