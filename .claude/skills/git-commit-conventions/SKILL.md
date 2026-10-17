@@ -3,7 +3,7 @@ name: git-commit-conventions
 description: Commit conventions for this repository — use whenever you are about to create a git commit here, stage changes, write a commit message, or amend one. Covers the mandatory no-attribution rule (no Co-Authored-By, no "Generated with Claude Code"), the message format, the pre-commit checks this repo requires (skill structure, secrets, run protocols), and how to split a change set into commits. Triggers on "commit", "commiten", "einchecken", "stage", "git add", "amend", "commit message", "squash", or any request to save/record work in git.
 ---
 
-# Commit conventions — Infrastructure-as-Skills
+# Commit conventions — Infrastructure-by-Skill
 
 ## 1. No attribution lines. Ever.
 

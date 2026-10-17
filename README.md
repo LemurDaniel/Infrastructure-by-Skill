@@ -1,4 +1,4 @@
-# Infrastructure as Skills
+# Infrastructure by Skill
 
 > Guided, executable runbooks for infrastructure that **cannot** be rolled out with IaC.
 
@@ -34,7 +34,7 @@ agent can execute and a human can review.
 
 ## Scope
 
-| | IaC (Terraform, Pulumi, Ansible) | Infrastructure as Skills |
+| | IaC (Terraform, Pulumi, Ansible) | Infrastructure by Skill |
 |---|---|---|
 | Precondition | There is an API | There is **no** API |
 | Execution | deterministic, idempotent | best effort, GUI-dependent |
@@ -58,7 +58,7 @@ the human takes over briefly and hands back.
 ## Repository layout
 
 ```
-Infrastructure-as-Skills/
+Infrastructure-by-Skill/
 ├── README.md                  # this document
 ├── CONVENTIONS.md             # mandatory phases, checkpoint rules, protocol format
 ├── _templates/

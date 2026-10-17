@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Pre-commit consistency checks for the Infrastructure-as-Skills repo.
+    Pre-commit consistency checks for the Infrastructure-by-Skill repo.
 
 .DESCRIPTION
     Read-only. Verifies the things that can actually go wrong in a repo of
