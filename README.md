@@ -6,19 +6,19 @@
 
 # ⚠️ ⚠️ ⚠️  PROTOTYPE WARNING  ⚠️ ⚠️ ⚠️
 
-> ## 🚧 THIS IS A PROTOTYPE. NONE OF IT IS PRODUCTION-READY. 🚧
+> ## 🚧 THIS IS A CONCEPT. NOTHING HERE IS BUILT, NONE OF IT IS PRODUCTION-READY. 🚧
 >
 > **What that means in practice:**
 >
-> - 🧪 **An experiment, not a product.** This repo explores whether ClickOps can be captured as a skill at all. The answer is still open.
-> - 🤖 **An LLM clicks in real user interfaces.** It can hit the wrong field, press the wrong button, catch the wrong record. There is no `plan`, no state, no `apply` that aborts.
-> - 💥 **No undo.** A GUI has no `terraform destroy`. Whatever goes wrong here is reverted by hand — if at all.
+> - 🧪 **An experiment, not a product.** This repo explores whether imperative ops work can be captured as a spec and rendered into scripts you can trust. The answer is still open.
+> - 📝 **Concept stage.** The spec format, the renderer and the templates below are a design, not code. Nothing in this README can be run yet.
+> - 💥 **Runbooks change real systems.** There is no state and no `terraform destroy`. A rendered script that rotates, deletes or fails over does exactly that.
 > - 🔒 **Never against production.** Dev and staging. Prod only with a second human approval, and even then at your own risk.
-> - 👀 **Not an autopilot.** Every run needs a human reading along and approving. Anyone leaving the window unattended has missed the point.
-> - 📉 **Everything can change.** Structure, conventions, skill format, protocol format. No stability guarantees, no migration paths, no versioning.
+> - 👀 **Not an autopilot.** Every mutating step has an approval gate. Anyone who passes `-Confirm:$false` without reading the plan has missed the point.
+> - 📉 **Everything can change.** Spec format, step kinds, templates, protocol format. No stability guarantees, no migration paths, no versioning.
 > - 🙅 **No warranty, no support.** Use at your own risk.
 >
-> **If there is an API: use Terraform. Use Pulumi. Use Ansible. Use anything else first.**
+> **If it is desired state: use Terraform. Use Bicep. Use Pulumi. A runbook is not a substitute for IaC.**
 
 ---
 
